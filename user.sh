@@ -34,7 +34,7 @@ curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 VALIDATE $? "Setting NPM source"
 
 yum install nodejs -y  &>>$LOGFILE
-VALIDATE $? "Installing NoddeJS"
+VALIDATE $? "Installing NodeJS"
 #useradd roboshop 
 if id -u "$USER" &>/dev/null; 
 then
