@@ -87,6 +87,6 @@ yum install mongodb-org-shell -y &>>$LOGFILE
 
 VALIDATE $? "Installing mongo client"
 
-mongo --host 172.31.17.89 </home/centos/roboshop-shell/schema/catalogue.js &>>$LOGFILE
+mongo --host mongodb.weldevops.online </home/centos/roboshop-shell/schema/catalogue.js &>>$LOGFILE
 
 VALIDATE $? "loading catalogue data into mongodb"
