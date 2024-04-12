@@ -41,6 +41,7 @@ then
     echo 'user already exists'
 else
     sudo useradd "$USER"  &>>$LOGFILE
+    VALIDATE $? "User added"
     echo "User $USER added successfully."
 fi
 
@@ -48,6 +49,7 @@ if [ ! -d "$directory" ];
 then
     mkdir "$directory"  &>>$LOGFILE
     echo "Directory created."
+    VALIDATE $? "Directory added"
 else
     echo "Directory already exists."
 fi
@@ -56,7 +58,7 @@ curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zi
 VALIDATE $? "downloading catalogue artifact"
 
 unzip /tmp/catalogue.zip  &>>$LOGFILE
-VALIDATE $? "unzipping catalogue"
+#VALIDATE $? "unzipping catalogue"
 
 npm install &>>$LOGFILE
 VALIDATE $? "Installing dependencies"
