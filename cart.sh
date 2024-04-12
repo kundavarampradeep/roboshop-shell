@@ -57,7 +57,7 @@ curl -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip  &>>$LOG
 VALIDATE $? "downloading cart artifact"
 
 unzip /tmp/cart.zip  &>>$LOGFILE
-#VALIDATE $? "unzipping cart"
+VALIDATE $? "unzipping cart"
 
 npm install &>>$LOGFILE
 VALIDATE $? "Installing dependencies"
