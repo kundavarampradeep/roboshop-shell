@@ -49,7 +49,6 @@ if [ ! -d "$directory" ];
 then
     mkdir "$directory"  &>>$LOGFILE
     echo "Directory created."
-    VALIDATE $? "Directory added"
 else
     echo "Directory already exists."
 fi
