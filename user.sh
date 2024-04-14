@@ -46,12 +46,19 @@ useradd roboshop &>>$LOGFILE
 mkdir /app &>>$LOGFILE
 
 curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  &>>$LOGFILE
+
 VALIDATE $? "downloading user artifact"
 
+cd /app &>>$LOGFILE
+
+VALIDATE $? "Moving to app directory"
+
 unzip /tmp/user.zip  &>>$LOGFILE
+
 VALIDATE $? "unzipping user"
 
 npm install &>>$LOGFILE
+
 VALIDATE $? "Installing dependencies"
 
 cp /home/centos/roboshop-shell/user.service /etc/systemd/system/user.service &>>$LOGFILE
@@ -78,6 +85,6 @@ yum install mongodb-org-shell -y &>>$LOGFILE
 
 VALIDATE $? "Installing mongo client"
 
-mongo --host mongodb.weldevops.online </home/centos/roboshop-shell/schema/user.js &>>$LOGFILE
+mongo --host mongodb.weldevops.online </app/schema/catalogue.js &>>$LOGFILE
 
 VALIDATE $? "loading user data into mongodb"

@@ -54,12 +54,19 @@ else
 fi
 
 curl -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip  &>>$LOGFILE
+
 VALIDATE $? "downloading cart artifact"
 
+cd /app &>>$LOGFILE
+
+VALIDATE $? "Moving to app directory"
+
 unzip /tmp/cart.zip  &>>$LOGFILE
+
 VALIDATE $? "unzipping cart"
 
 npm install &>>$LOGFILE
+
 VALIDATE $? "Installing dependencies"
 
 cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service &>>$LOGFILE

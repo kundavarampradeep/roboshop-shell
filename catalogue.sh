@@ -10,8 +10,6 @@ R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
-USER="roboshop"
-directory="app"
 
 if [ $USERID -ne 0 ];
 then
@@ -45,15 +43,23 @@ useradd roboshop &>>$LOGFILE
 #write a condition to check directory already exist or not
 mkdir /app &>>$LOGFILE
 
-curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip  &>>$LOGFILE
+curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>>$LOGFILE
+
 VALIDATE $? "downloading catalogue artifact"
 
-unzip /tmp/catalogue.zip  &>>$LOGFILE
+cd /app &>>$LOGFILE
+
+VALIDATE $? "Moving into app directory"
+
+unzip /tmp/catalogue.zip &>>$LOGFILE
+
 VALIDATE $? "unzipping catalogue"
 
 npm install &>>$LOGFILE
+
 VALIDATE $? "Installing dependencies"
 
+# give full path of catalogue.service because we are inside /app
 cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service &>>$LOGFILE
 
 VALIDATE $? "copying catalogue.service"
@@ -78,6 +84,6 @@ yum install mongodb-org-shell -y &>>$LOGFILE
 
 VALIDATE $? "Installing mongo client"
 
-mongo --host mongodb.weldevops.online </home/centos/roboshop-shell/schema/catalogue.js &>>$LOGFILE
+mongo --host mongodb.weldevops.online </app/schema/catalogue.js &>>$LOGFILE
 
 VALIDATE $? "loading catalogue data into mongodb"
