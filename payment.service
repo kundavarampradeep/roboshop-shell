@@ -4,11 +4,11 @@ Description=Payment Service
 [Service]
 User=root
 WorkingDirectory=/app
-Environment=CART_HOST=cart.weldevops.online
+Environment=CART_HOST=172.31.21.186
 Environment=CART_PORT=8080
-Environment=USER_HOST=user.weldevops.online
+Environment=USER_HOST=172.31.26.6
 Environment=USER_PORT=8080
-Environment=AMQP_HOST=rabbitmq.weldevops.online
+Environment=AMQP_HOST=172.31.95.44
 Environment=AMQP_USER=roboshop
 Environment=AMQP_PASS=roboshop123
 
