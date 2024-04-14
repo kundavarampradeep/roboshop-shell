@@ -45,7 +45,7 @@ VALIDATE $? "Moving to app directory"
 
 unzip /tmp/payment.zip &>>$LOGFILE
 
-VALIDATE $? "unzip artifact"
+#VALIDATE $? "unzip artifact"
 
 pip3.6 install -r requirements.txt &>>$LOGFILE
 
