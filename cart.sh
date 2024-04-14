@@ -10,8 +10,6 @@ R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
-USER="roboshop"
-directory="app"
 
 if [ $USERID -ne 0 ];
 then
@@ -31,37 +29,29 @@ VALIDATE(){
 
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 
-VALIDATE $? "Setting NPM source"
+VALIDATE $? "Setting up NPM Source"
 
-yum install nodejs -y  &>>$LOGFILE
+yum install nodejs -y &>>$LOGFILE
+
 VALIDATE $? "Installing NodeJS"
-#useradd roboshop 
-if id -u "$USER" &>/dev/null; 
-then
-    echo 'cart already exists'
-else
-    sudo useradd "$USER"  &>>$LOGFILE
-    VALIDATE $? "User added"
-    echo "User $USER added successfully."
-fi
 
-if [ ! -d "$directory" ]; 
-then
-    mkdir "$directory"  &>>$LOGFILE
-    echo "Directory created."
-else
-    echo "Directory already exists."
-fi
+#once the user is created, if you run this script 2nd time
+# this command will defnitely fail
+# IMPROVEMENT: first check the user already exist or not, if not exist then create
+useradd roboshop &>>$LOGFILE
 
-curl -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip  &>>$LOGFILE
+#write a condition to check directory already exist or not
+mkdir /app &>>$LOGFILE
+
+curl -o /tmp/cart.zip https://roboshop-builds.s3.amazonaws.com/cart.zip &>>$LOGFILE
 
 VALIDATE $? "downloading cart artifact"
 
 cd /app &>>$LOGFILE
 
-VALIDATE $? "Moving to app directory"
+VALIDATE $? "Moving into app directory"
 
-unzip /tmp/cart.zip  &>>$LOGFILE
+unzip /tmp/cart.zip &>>$LOGFILE
 
 VALIDATE $? "unzipping cart"
 
@@ -69,6 +59,7 @@ npm install &>>$LOGFILE
 
 VALIDATE $? "Installing dependencies"
 
+# give full path of cart.service because we are inside /app
 cp /home/centos/roboshop-shell/cart.service /etc/systemd/system/cart.service &>>$LOGFILE
 
 VALIDATE $? "copying cart.service"
@@ -79,8 +70,8 @@ VALIDATE $? "daemon reload"
 
 systemctl enable cart &>>$LOGFILE
 
-VALIDATE $? "Enabling Catalogue"
+VALIDATE $? "Enabling cart"
 
 systemctl start cart &>>$LOGFILE
 
-VALIDATE $? "Starting Catalogue"
+VALIDATE $? "Starting cart"
