@@ -31,27 +31,19 @@ VALIDATE(){
 
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 
-VALIDATE $? "Setting NPM source"
+VALIDATE $? "Setting up NPM Source"
 
-yum install nodejs -y  &>>$LOGFILE
+yum install nodejs -y &>>$LOGFILE
+
 VALIDATE $? "Installing NodeJS"
-#useradd roboshop 
-if id -u "$USER" &>/dev/null; 
-then
-    echo 'user already exists'
-else
-    sudo useradd "$USER"  &>>$LOGFILE
-    VALIDATE $? "User added"
-    echo "User $USER added successfully."
-fi
 
-if [ ! -d "$directory" ]; 
-then
-    mkdir "$directory"  &>>$LOGFILE
-    echo "Directory created."
-else
-    echo "Directory already exists."
-fi
+#once the user is created, if you run this script 2nd time
+# this command will defnitely fail
+# IMPROVEMENT: first check the user already exist or not, if not exist then create
+useradd roboshop &>>$LOGFILE
+
+#write a condition to check directory already exist or not
+mkdir /app &>>$LOGFILE
 
 curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  &>>$LOGFILE
 VALIDATE $? "downloading user artifact"
