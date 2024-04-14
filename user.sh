@@ -10,8 +10,6 @@ R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
-USER="roboshop"
-directory="app"
 
 if [ $USERID -ne 0 ];
 then
@@ -45,15 +43,15 @@ useradd roboshop &>>$LOGFILE
 #write a condition to check directory already exist or not
 mkdir /app &>>$LOGFILE
 
-curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip  &>>$LOGFILE
+curl -o /tmp/user.zip https://roboshop-builds.s3.amazonaws.com/user.zip &>>$LOGFILE
 
 VALIDATE $? "downloading user artifact"
 
 cd /app &>>$LOGFILE
 
-VALIDATE $? "Moving to app directory"
+VALIDATE $? "Moving into app directory"
 
-unzip /tmp/user.zip  &>>$LOGFILE
+unzip /tmp/user.zip &>>$LOGFILE
 
 VALIDATE $? "unzipping user"
 
@@ -61,6 +59,7 @@ npm install &>>$LOGFILE
 
 VALIDATE $? "Installing dependencies"
 
+# give full path of user.service because we are inside /app
 cp /home/centos/roboshop-shell/user.service /etc/systemd/system/user.service &>>$LOGFILE
 
 VALIDATE $? "copying user.service"
@@ -71,11 +70,11 @@ VALIDATE $? "daemon reload"
 
 systemctl enable user &>>$LOGFILE
 
-VALIDATE $? "Enabling Catalogue"
+VALIDATE $? "Enabling user"
 
 systemctl start user &>>$LOGFILE
 
-VALIDATE $? "Starting Catalogue"
+VALIDATE $? "Starting user"
 
 cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo &>>$LOGFILE
 
@@ -85,6 +84,6 @@ yum install mongodb-org-shell -y &>>$LOGFILE
 
 VALIDATE $? "Installing mongo client"
 
-mongo --host mongodb.weldevops.online </app/schema/catalogue.js &>>$LOGFILE
+mongo --host mongodb.weldevops.online </app/schema/user.js &>>$LOGFILE
 
 VALIDATE $? "loading user data into mongodb"
