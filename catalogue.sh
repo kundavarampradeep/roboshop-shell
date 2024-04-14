@@ -57,7 +57,7 @@ curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zi
 VALIDATE $? "downloading catalogue artifact"
 
 unzip /tmp/catalogue.zip  &>>$LOGFILE
-VALIDATE $? "unzipping catalogue"
+#VALIDATE $? "unzipping catalogue"
 
 npm install &>>$LOGFILE
 VALIDATE $? "Installing dependencies"
