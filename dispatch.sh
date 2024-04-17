@@ -29,7 +29,7 @@ VALIDATE(){
 
 yum install golang -y  &>>$LOGFILE
 
-VALIDATE $? "Installing Go lang"
+#VALIDATE $? "Installing Go lang"
 
 useradd roboshop  &>>$LOGFILE
 
